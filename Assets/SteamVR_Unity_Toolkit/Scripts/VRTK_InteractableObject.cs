@@ -274,6 +274,7 @@ namespace VRTK
                         ChangeColor(colorArray);
                     }
 					if (soundOnTouch != null && !soundOnTouch.isPlaying) {
+						soundOnTouch.mute = false;
 						soundOnTouch.Play ();
 					}
                 }
