@@ -47,11 +47,15 @@ public class CopyCatScript : MonoBehaviour {
 		}
 	}
 
-	private void incrementLevel() {
-		level = level + 1;
+	private void setLevel(int newLevel) {
+		level = newLevel;
 		foreach (Text value in levelValue.GetComponents<Text>()) {
 			value.text = level.ToString ();
 		}
+	}
+
+	private void incrementLevel() {
+		setLevel (level + 1);
 	}
 
 	private void incrementTurn() {
@@ -99,13 +103,19 @@ public class CopyCatScript : MonoBehaviour {
 //			Debug.Log ("Start BeginGame");
 			startButton.SetActive (false);
 			setActive (true);
+			setScore (0);
+			setLevel (1);
+			resetTurn ();
 			resetGeneratedSequence ();
 			resetPlayerSequence ();
-			Invoke("newLevel", 1f);
+			setGameState (GameState.ReadyToStart);
+			Invoke ("newLevel", 1f);
+//		} else {
+//			Debug.Log ("Unable to Start BeginGame");
 		}
 	}
 
-	private void newLevel() {
+ 	private void newLevel() {
 		if (stateOfGame == GameState.ReadyToStart || stateOfGame == GameState.LevelWon) {
 //			Debug.Log ("newLevel");
 			setGameState (GameState.ComputerActive);
@@ -132,6 +142,7 @@ public class CopyCatScript : MonoBehaviour {
 
 	private IEnumerator incorrectSequence() {
 		GameObject correctPad = intToGameObject (genSequence [turn]);
+		yield return new WaitForSeconds (0.3f);
 		for (int counter = 0; counter < 4; counter++) {
 			toggleHighlight (correctPad, true);
 			yield return new WaitForSeconds (0.3f);
@@ -157,8 +168,9 @@ public class CopyCatScript : MonoBehaviour {
 //		Debug.Log ("genSequence.Count = " + genSequence.Count.ToString ());
 //		Debug.Log ("plaSequence.Count = " + plaSequence.Count.ToString ());
 //		Debug.Log ("Turn = " + turn.ToString ());
-		if (pad != genSequence [turn]) {				Debug.Log ("pad = " + pad.ToString ());
-			Debug.Log ("genSquence[turn] = " + genSequence [turn].ToString ());
+		if (pad != genSequence [turn]) {
+//			Debug.Log ("pad = " + pad.ToString ());
+//			Debug.Log ("genSquence[turn] = " + genSequence [turn].ToString ());
 			setGameState (GameState.GameLost);
 			StartCoroutine (incorrectSequence());
 		} else {
@@ -167,7 +179,6 @@ public class CopyCatScript : MonoBehaviour {
 			if (turn == genSequence.Count) {
 				setGameState (GameState.LevelWon);
 				incrementLevel ();
-				setActive (false);
 				Invoke ("newLevel", 1f);
 			} else {
 				setGameState (GameState.PlayerActive);
