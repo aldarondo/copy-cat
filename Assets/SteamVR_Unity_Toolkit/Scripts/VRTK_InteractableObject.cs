@@ -52,7 +52,6 @@ namespace VRTK
         public Vector2 rumbleOnTouch = Vector2.zero;
         public AllowedController allowedTouchControllers = AllowedController.Both;
         public ControllerHideMode hideControllerOnTouch = ControllerHideMode.Default;
-		public AudioSource soundOnTouch;
 
         [Header("Grab Interactions", order = 2)]
         public bool isGrabbable = false;
@@ -273,10 +272,6 @@ namespace VRTK
                         var colorArray = BuildHighlightColorArray(color);
                         ChangeColor(colorArray);
                     }
-					if (soundOnTouch != null && !soundOnTouch.isPlaying) {
-						soundOnTouch.mute = false;
-						soundOnTouch.Play ();
-					}
                 }
                 else
                 {
