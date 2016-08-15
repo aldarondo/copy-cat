@@ -42,14 +42,14 @@ public class CopyCatScript : MonoBehaviour {
 
 	private void setScore(int newScore) {		
 		score = newScore;
-		foreach (Text value in scoreValue.GetComponents<Text>()) {
+		foreach (TextMesh value in scoreValue.GetComponents<TextMesh>()) {
 			value.text = score.ToString ();
 		}
 	}
 
 	private void setLevel(int newLevel) {
 		level = newLevel;
-		foreach (Text value in levelValue.GetComponents<Text>()) {
+		foreach (TextMesh value in levelValue.GetComponents<TextMesh>()) {
 			value.text = level.ToString ();
 		}
 	}
@@ -188,10 +188,11 @@ public class CopyCatScript : MonoBehaviour {
 
 	void Start () {
 		setActive (false);
-		Invoke ("delayedStart", 5f);
+		Invoke ("delayedStart", 2f);
 	}
 
 	private void delayedStart() {
+		startButton.SetActive (true);
 		setGameState (GameState.ReadyToStart);
 	}
 	
